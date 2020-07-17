@@ -34,9 +34,9 @@ EFI_STATUS read_file(UINTN file_size, VOID **tmp_buff, EFI_FILE_PROTOCOL* elf_fi
 
 VOID copy_mem(VOID* before_addr, VOID* after_addr, UINTN size) {
   EFI_STATUS status;
-  UINTN num_pages = size / 1024 * 4;
+  UINTN num_pages = size / (1024 * 4);
 
-  status = gBS->AllocatePages(AllocateAddress, EfiLoaderData, num_pages, before_addr);
+  status = gBS->AllocatePages(AllocateAddress, EfiLoaderData, num_pages, after_addr);
   if (EFI_ERROR(status)) {
     return;
   }
@@ -185,13 +185,9 @@ EFI_STATUS EFIAPI UefiMain (IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *Syste
 
   Print(L"ReadFile: %r\n", status);
 
-  // Elf64_Ehdr *tmp = (Elf64_Ehdr*)tmp_buff;
-  // Print(L"Tmp 0x%0lx\n", tmp->e_entry);
-
   Elf64_Ehdr *elfh = (Elf64_Ehdr*)DEFAULT_START_ADDR;
-  copy_mem((VOID*)tmp_buff, (VOID*)elfh, file_size);
+  copy_mem(tmp_buff, (VOID*)elfh, file_size);
 
-  Print(L"CopyMem: %r\n", status);
   Print(L"EntryAddress: 0x%0lx\n", elfh->e_entry);
 
   MemoryMap memmap = {NULL, 0, 0, 0, 0};
