@@ -1,0 +1,5 @@
+  1 [Defines]                                                                   
+  2   DEC_SPECIFICATION              = 0x00010005
+  3   PACKAGE_NAME                   = VMMLoaderPkg
+  4   PACKAGE_GUID                   = 437FEFC1-B2F6-4839-A80A-7A02EB2ADF89
+  5   PACKAGE_VERSION                = 0.1

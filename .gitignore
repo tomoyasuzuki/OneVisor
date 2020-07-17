@@ -1,0 +1,3 @@
+include/edk2
+obj
+*.elf
