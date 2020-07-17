@@ -1,3 +1,5 @@
 include/edk2
 obj
 *.elf
+c_cpp_properties.json
+settings.json
