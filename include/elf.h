@@ -9,10 +9,9 @@ typedef uint32_t Elf64_Word;
 typedef uint32_t Elf64_Sword;
 typedef uint64_t Elf64_Xword;
 typedef uint64_t Elf64_Sxword;
-typedef uint8_t  unsigned_char;
 
 typedef struct Elf64_Ehdr {
-    unsigned_char   e_ident[EI_NIDENT]; 
+    unsigned char   e_ident[EI_NIDENT]; 
     Elf64_Half      e_type;            
     Elf64_Half      e_machine;         
     Elf64_Word      e_version;         

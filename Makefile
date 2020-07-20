@@ -1,17 +1,18 @@
-COMPILER  = clang++
+COMPILER  = clang
 CFLAGS    = -O0 -g -MD -Wall
 INCLUDE   = -I./include
 TARGET    = ./VMMLoaderPkg/vmm_entry.elf
 SRCDIR    = ./src
-SOURCES := $(shell find $(SRCDIR) -name *.cpp -or -name *.c -or -name *.asm)
+SOURCES := $(shell find $(SRCDIR) -name *.c -or -name *.asm)
 OBJDIR    = ./obj
 OBJECTS   = $(OBJDIR)/vmm_entry.o $(OBJDIR)/window.o $(OBJDIR)/graphics.o
 DEPENDS   = $(OBJECTS:.o=.d)
 LDFLAGS = --entry vmmEntry --image-base 0x100000 --static -nostdlib 
+
 $(TARGET): $(OBJECTS)
 	ld.lld $(LDFLAGS) -o $(TARGET) $(OBJECTS)
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	-mkdir -p $(OBJDIR)
 	$(COMPILER) $(CFLAGS) $(INCLUDE) -o $@ -c $<
 

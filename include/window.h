@@ -1,6 +1,6 @@
 #pragma once
 #include <stdint.h>
-#include "frameBuffer.hpp"
+#include "frameBuffer.h"
 
 typedef struct Window {
     uint64_t* baseAddr;

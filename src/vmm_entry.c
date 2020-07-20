@@ -1,10 +1,9 @@
-#include "frameBuffer.hpp"
-#include "window.hpp"
-#include "graphics.hpp"
-#include "assm.h"
+#include "frameBuffer.h"
+#include "window.h"
+#include "graphics.h"
 #include <stdint.h>
 
-extern "C" void vmmEntry(FrameBuffer *frameBuffer) {
+void vmmEntry(FrameBuffer *frameBuffer) {
     Window window = {
         frameBuffer->baseAddr,
         frameBuffer->size, 

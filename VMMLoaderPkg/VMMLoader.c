@@ -7,7 +7,7 @@
 #include  <Protocol/LoadedImage.h>
 #include  <Protocol/SimpleFileSystem.h>
 #include  <Guid/FileInfo.h>
-#include "frameBuffer.hpp"
+#include "frameBuffer.h"
 #include "elf.h"
 #include "assm.h"
 
@@ -171,7 +171,7 @@ EFI_STATUS EFIAPI UefiMain (IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *Syste
 
   Print(L"OpenFile: %r\n", status);
 
-  UINTN buff_size = sizeof(EFI_FILE_INFO);
+  UINTN buff_size = 256;
   VOID* file_info_buff[buff_size];
 
   status = get_file_info(elf_file, file_info_buff, buff_size);
@@ -188,7 +188,10 @@ EFI_STATUS EFIAPI UefiMain (IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *Syste
   Elf64_Ehdr *elfh = (Elf64_Ehdr*)DEFAULT_START_ADDR;
   copy_mem(tmp_buff, (VOID*)elfh, file_size);
 
-  Print(L"EntryAddress: 0x%0lx\n", elfh->e_entry);
+  Print(L"e_type: %u\n", elfh->e_type);
+  Print(L"e_machine: %u\n", elfh->e_machine);
+  Print(L"e_version: %u\n", elfh->e_version);
+  Print(L"e_entry: 0x%x\n", elfh->e_entry);
 
   MemoryMap memmap = {NULL, 0, 0, 0, 0};
   CHAR8 memmap_buf[4096 * 4];
