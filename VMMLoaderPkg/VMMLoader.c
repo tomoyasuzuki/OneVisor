@@ -45,8 +45,7 @@ VOID copy_mem(VOID* before_addr, VOID* after_addr, UINTN size) {
 }
 
 EFI_STATUS get_memmap(MemoryMap *memmap) {
-  EFI_STATUS status;
-  return status = gBS->GetMemoryMap(
+  return gBS->GetMemoryMap(
     &memmap->map_size,
     memmap->buff,
     &memmap->map_key,
@@ -100,7 +99,7 @@ EFI_STATUS get_file_info(EFI_FILE_PROTOCOL *file, VOID* file_info_buff, UINTN bu
       file_info_buff);
     
     buff_size += 1024;
-   } while(EFI_ERROR(status));
+  } while(EFI_ERROR(status));
 
   return status;
 }
