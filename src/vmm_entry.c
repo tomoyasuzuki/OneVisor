@@ -4,7 +4,9 @@
 
 void vmmEntry(FrameBuffer *frameBuffer) {
     
-    init_graphic((Window*)frameBuffer);
+    init_graphic(frameBuffer);
     blackout_window();
-    draw_pixel(500, 500);
+    
+    char *s = "OneVisor";
+    put_s(s);
 }
