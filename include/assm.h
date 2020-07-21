@@ -1,3 +1,3 @@
-#include "frameBuffer.h"
+#include "bootinfo.h"
 
-void jumpToVmm(FrameBuffer *frameBuffer, uint64_t *baseAddr);
+void jumpToVmm(BootInfo *bootinfo, uint64_t *baseAddr);
