@@ -1,10 +1,10 @@
-#include "frameBuffer.h"
+#include "bootinfo.h"
 #include "window.h"
 #include <stdint.h>
 
-void vmmEntry(FrameBuffer *frameBuffer) {
+void vmmEntry(BootInfo *boot_info) {
     
-    init_graphic(frameBuffer);
+    init_graphic(boot_info->frame_buff);
     blackout_window();
     
     char *s = "OneVisor";

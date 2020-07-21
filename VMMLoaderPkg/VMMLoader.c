@@ -8,18 +8,12 @@
 #include  <Protocol/SimpleFileSystem.h>
 #include  <Guid/FileInfo.h>
 #include "frameBuffer.h"
+#include "memorymap.h"
+#include "bootinfo.h"
 #include "elf.h"
 #include "assm.h"
 
 #define DEFAULT_START_ADDR (uint64_t *)0x100000
-
-typedef struct MemoryMap {
-  EFI_MEMORY_DESCRIPTOR* buff;
-  UINTN map_size;
-  UINTN map_key;
-  UINTN desc_size;
-  UINT32 desc_version;
-}MemoryMap;
 
 EFI_STATUS read_file(UINTN file_size, VOID **tmp_buff, EFI_FILE_PROTOCOL* elf_file) {
   EFI_STATUS status;
@@ -46,10 +40,10 @@ VOID copy_mem(VOID* before_addr, VOID* after_addr, UINTN size) {
 
 EFI_STATUS get_memmap(MemoryMap *memmap) {
   return gBS->GetMemoryMap(
-    &memmap->map_size,
+    (UINTN*)&memmap->size,
     memmap->buff,
-    &memmap->map_key,
-    &memmap->desc_size, 
+    (UINTN*)&memmap->key,
+    (UINTN*)&memmap->desc_size, 
     &memmap->desc_version);
 }
 
@@ -195,32 +189,34 @@ EFI_STATUS EFIAPI UefiMain (IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *Syste
   MemoryMap memmap = {NULL, 0, 0, 0, 0};
   CHAR8 memmap_buf[4096 * 4];
 
-  memmap.map_size = sizeof(memmap_buf);
-  memmap.buff = (EFI_MEMORY_DESCRIPTOR*)memmap.map_size;
+  memmap.size = sizeof(memmap_buf);
+  memmap.buff = (EFI_MEMORY_DESCRIPTOR*)memmap.size;
 
   status = get_memmap(&memmap);
 
   Print(L"GetMemoryMap: %r\n", status);
 
-  status = gBS->ExitBootServices(ImageHandle, memmap.map_key);
+  status = gBS->ExitBootServices(ImageHandle, memmap.key);
 
   if(EFI_ERROR(status)) {
     status = get_memmap(&memmap);
 
     while(EFI_ERROR(status)) {
-      memmap.map_size += 512;
+      memmap.size += 512;
       status = get_memmap(&memmap);
     }
     
-    status = gBS->ExitBootServices(ImageHandle, memmap.map_key);
+    status = gBS->ExitBootServices(ImageHandle, memmap.key);
 
     if (EFI_ERROR(status)) {
       Print(L"Failed to ExitBootServices: %r\n", status);
     }
   }
 
+  BootInfo bootinfo = {&frameBufferConfig, &memmap};
+
   uint64_t *entry_addr = (uint64_t*)elfh->e_entry;
-  jumpToVmm(&frameBufferConfig, entry_addr);
+  jumpToVmm(&bootinfo, entry_addr);
 
   return EFI_SUCCESS;
 }
