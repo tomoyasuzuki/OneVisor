@@ -5,8 +5,8 @@
 typedef struct Chunk {
     uint64_t prev_size;
     uint64_t size;
-    Chunk *prev;
-    Chunk *next;
+    struct Chunk *prev;
+    struct Chunk *next;
 } Chunk;
 
 void init_memory(MemoryMap *memmap);

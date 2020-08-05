@@ -34,6 +34,6 @@ enum MemoryType {
     EEfiPalCode,
     EfiPersistentMemory,
     EfiMaxMemoryType
-} 
+};
 
 

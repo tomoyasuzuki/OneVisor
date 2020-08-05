@@ -190,7 +190,7 @@ EFI_STATUS EFIAPI UefiMain (IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *Syste
   CHAR8 memmap_buf[4096 * 4];
 
   memmap.size = sizeof(memmap_buf);
-  memmap.buff = (EFI_MEMORY_DESCRIPTOR*)memmap.size;
+  memmap.buff = (EFI_MEMORY_DESCRIPTOR*)&memmap_buf;
 
   status = get_memmap(&memmap);
 
