@@ -18,22 +18,22 @@ typedef struct MemoryDescriptor {
 } MemoryDescriptor;
 
 enum MemoryType {
-    EfiReservedMemoryType,
-    EfiLoaderCode,
-    EfiLoaderData,
-    EfiBootServicesCode,
-    EfiBootServicesData,
-    EfiRuntimeServicesCode,
-    EfiRuntimeServicesData,
-    EfiConventionalMemory,
-    EfiUnusableMemory,
-    EfiACPIReclaimMemory,
-    EfiACPIMemoryNVS,
-    EfiACPIMemoryMappedIO,
-    EfiMemoryMappedIOPortSpace,
-    EEfiPalCode,
-    EfiPersistentMemory,
-    EfiMaxMemoryType
+    kEfiReservedMemoryType,
+    kEfiLoaderCode,
+    kEfiLoaderData,
+    kEfiBootServicesCode,
+    kEfiBootServicesData,
+    kEfiRuntimeServicesCode,
+    kEfiRuntimeServicesData,
+    kEfiConventionalMemory,
+    kEfiUnusableMemory,
+    kEfiACPIReclaimMemory,
+    kEfiACPIMemoryNVS,
+    kEfiACPIMemoryMappedIO,
+    kEfiMemoryMappedIOPortSpace,
+    kEEfiPalCode,
+    kEfiPersistentMemory,
+    kEfiMaxMemoryType
 };
 
 

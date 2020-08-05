@@ -1,5 +1,6 @@
 #include "bootinfo.h"
 #include "window.h"
+#include "memory.h"
 #include <stdint.h>
 
 void vmmEntry(BootInfo *boot_info) {
@@ -9,4 +10,5 @@ void vmmEntry(BootInfo *boot_info) {
     
     char *s = "OneVisor";
     put_s(s);
+    init_memory(boot_info->memmap);
 }

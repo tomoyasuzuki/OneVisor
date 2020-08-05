@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include <stdio.h>
 #include "memorymap.h"
 
 typedef struct Chunk {
@@ -11,3 +12,4 @@ typedef struct Chunk {
 
 void init_memory(MemoryMap *memmap);
 
+void allocate(size_t size);
