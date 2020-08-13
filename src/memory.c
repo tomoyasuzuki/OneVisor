@@ -8,8 +8,9 @@ void init_memory(MemoryMap *memmap) {
         MemoryDescriptor *mem_desc = (MemoryDescriptor*)i;
         
         if (mem_desc->type == kEfiConventionalMemory) {
-            char *s = "Find EfiConventionalMemory";
-            put_s(s);
+            // NOTE: WIP. Implement paging functions first.
+            // char *s = "Find EfiConventionalMemory";
+            // put_s(s);
         }
     }
 }
