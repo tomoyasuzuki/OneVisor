@@ -9,7 +9,7 @@
 
 alignas(PageSize4K) uint64_t pml4_table[512];
 alignas(PageSize4K) uint64_t pdp_table[512];
-alignas(PageSize4K) uint64_t page_directory[64][512];
+alignas(PageSize4K) uint64_t page_directory[4][512];
 
 void init_paging() {
     pml4_table[0] = (uint64_t)(&pdp_table[0]) | 0x003;
@@ -21,8 +21,7 @@ void init_paging() {
     }
 
     write_cr3((uint64_t)&pml4_table[0]);
-    uint64_t current_cr0 = read_cr0();
-    write_cr0(current_cr0 & 0xfffeffff);
+    write_cr0(read_cr0() & 0xfffeffff);
 }
 
 
