@@ -2,6 +2,7 @@
 #include "paging.h"
 #include "assembly.h"
 #include <stdalign.h>
+#include "cpu.h"
 
 #define PageSize4K 4096
 #define PageSize2M 512 * PageSize4K
@@ -20,8 +21,10 @@ void init_paging() {
         }
     }
 
+    union cr0 current_cr0 = (union cr0)read_cr0();
+    current_cr0.bits.wp = 1;
     write_cr3((uint64_t)&pml4_table[0]);
-    write_cr0(read_cr0() & 0xfffeffff);
+    write_cr0(current_cr0.control);
 }
 
 
