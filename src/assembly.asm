@@ -20,3 +20,16 @@ global write_cr0
 write_cr0:
     mov cr0, rdi
     ret
+
+global io_in
+io_in:
+    mov dx, di
+    in eax, dx
+    ret
+
+global io_out
+io_out:
+    mov dx, di
+    mov eax, esi
+    out dx, eax
+    ret
