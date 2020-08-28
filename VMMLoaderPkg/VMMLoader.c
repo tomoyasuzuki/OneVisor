@@ -217,6 +217,7 @@ EFI_STATUS EFIAPI UefiMain (IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *Syste
 
   uint64_t *entry_addr = (uint64_t*)elfh->e_entry;
   jumpToVmm(&bootinfo, entry_addr);
-
+  while(1);
+  
   return EFI_SUCCESS;
 }
