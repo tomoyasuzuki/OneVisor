@@ -8,7 +8,7 @@
 #define PageSize2M 512 * PageSize4K
 #define PageSize1G 512 * PageSize2M
 
-alignas(PageSize4K) uint64_t pml4_table[512];
+alignas(PageSize4K) uint64_t pml4_table[1];
 alignas(PageSize4K) uint64_t pdp_table[512];
 alignas(PageSize4K) uint64_t page_directory[4][512];
 

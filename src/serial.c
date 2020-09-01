@@ -3,12 +3,12 @@
 
 void init_serial() {
     io_out8(SERIAL_PORT_ADDR + 1, 0x00);   
-    // io_out8(SERIAL_PORT_ADDR + 3, 0x80);    
-    // io_out8(SERIAL_PORT_ADDR + 0, 0x01);    
-    // io_out8(SERIAL_PORT_ADDR + 1, 0x00);    
-    // io_out8(SERIAL_PORT_ADDR + 3, 0x03);    
-    // io_out8(SERIAL_PORT_ADDR + 2, 0xC7);    
-    // io_out8(SERIAL_PORT_ADDR + 4, 0x0B);
+    io_out8(SERIAL_PORT_ADDR + 3, 0x80);    
+    io_out8(SERIAL_PORT_ADDR + 0, 0x01);    
+    io_out8(SERIAL_PORT_ADDR + 1, 0x00);    
+    io_out8(SERIAL_PORT_ADDR + 3, 0x03);    
+    io_out8(SERIAL_PORT_ADDR + 2, 0xC7);    
+    io_out8(SERIAL_PORT_ADDR + 4, 0x0B);
 }
 
 uint8_t is_serial_received() {
