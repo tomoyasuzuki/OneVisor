@@ -1,4 +1,3 @@
-#include "cpu.h"
 #include <stdint.h>
 
 void init_segment();

@@ -1,12 +1,19 @@
 #include "segment.h"
 #include "cpu.h"
+#include "assembly.h"
+#include "serial.h"
 
-union segment_descriptor *gdt;
+uint64_t gdt[3];
 
 void init_segment() {
-    gdt[0].control = 0;
-    gdt[1].control = create_segment_descriptor(5, 0);
-    gdt[2].control = create_segment_descriptor(1,0);
+    gdt[0] = 0;
+    gdt[1] = create_segment_descriptor(10, 0); // code segment
+    gdt[2] = create_segment_descriptor(2,0); // data segment
+
+    load_gdt((uint64_t)(&gdt[0]), sizeof(gdt) - 1);
+
+    set_ds(0);
+    set_cs(1 << 3);
 }
 
 uint64_t create_segment_descriptor(uint64_t type, uint64_t dpl) {
@@ -18,6 +25,8 @@ uint64_t create_segment_descriptor(uint64_t type, uint64_t dpl) {
     seg_desc.bits.g = 1;
     seg_desc.bits.p = 1;
     seg_desc.bits.s = 1;
+    seg_desc.bits.l = 1;
+    seg_desc.bits.db = 0;
 
     return seg_desc.control;
 }
