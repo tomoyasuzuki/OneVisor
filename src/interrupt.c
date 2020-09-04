@@ -1,5 +1,6 @@
 #include "interrupt.h"
 #include "segment.h"
+#include "assembly.h"
 
 struct interrupt_descriptor idt[256];
 
@@ -25,6 +26,8 @@ void init_idt() {
     set_idt_entry(17, (uint16_t)ac_handler);
     set_idt_entry(18, (uint16_t)mc_handler);
     set_idt_entry(19, (uint16_t)xm_handler);
+
+    load_idt(sizeof(idt) - 1, (uint64_t)(&idt[0]));
 }
 
 void clear_idt() {

@@ -82,3 +82,15 @@ label:
     mov     rsp,rbp
     pop     rbp
     ret
+
+global load_idt
+load_idt:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 10
+    mov [rsp], di
+    mov [rsp + 2], rsi
+    lidt [rsp]
+    mov rsp, rbp
+    pop rbp
+    ret
