@@ -12,3 +12,11 @@ void write_serial(const char value);
 uint8_t is_transmit_empty();
 
 void send_serials(const char *value);
+
+void send_u64(uint64_t value);
+
+void send_addr(uint64_t value);
+
+void log_u64(uint64_t value);
+
+void log_char(char *value);

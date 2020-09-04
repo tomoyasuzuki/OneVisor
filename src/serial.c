@@ -1,5 +1,6 @@
 #include "serial.h"
 #include "assembly.h"
+#include "util.h"
 
 void init_serial() {
     io_out8(SERIAL_PORT_ADDR + 1, 0x00);   
@@ -37,4 +38,26 @@ void send_serials(const char *value) {
         write_serial(value[i]);
         i++;
     }
+}
+
+void log_u64(uint64_t value) {
+    send_addr(value);
+    send_serials("\n");
+}
+
+void log_char(char *value) {
+    send_serials(value);
+    send_serials("\n");
+}
+
+void send_u64(uint64_t value) {
+    char str[124];
+    convert_u64_to_char(str, value);
+    send_serials(str);
+}
+
+void send_addr(uint64_t value) {
+    char *str = "0x";
+    send_serials(str);
+    send_u64(value);
 }

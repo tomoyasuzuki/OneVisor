@@ -1,4 +1,6 @@
+#pragma once
 #include <stdint.h>
+
 
 union cr0 {
     uint64_t control;

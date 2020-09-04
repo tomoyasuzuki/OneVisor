@@ -6,3 +6,8 @@ uint64_t read_cr0();
 void write_cr0(uint64_t value);
 uint8_t io_in8(uint16_t addr);
 void io_out8(uint16_t addr, uint8_t value);
+uint32_t io_in32(uint16_t);
+void io_out32(uint16_t addr, uint32_t value);
+void load_gdt(uint64_t offset, uint16_t limit);
+void set_ds(uint16_t value);
+void set_cs(uint16_t cs);

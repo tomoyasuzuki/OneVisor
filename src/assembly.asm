@@ -33,3 +33,52 @@ io_out8:
     mov rax, rsi
     out dx, al
     ret
+
+global io_in32
+io_in32:
+    mov dx, di
+    in eax, dx
+    ret
+
+global io_out32
+io_out32:
+    mov dx, di
+    mov eax, esi
+    out dx, eax
+    ret
+global load_gdt
+load_gdt:
+    push rbp
+    mov rbp, rsp
+    sub rsp, 0x10
+    mov rdx, rsp
+    mov [rdx], si
+    mov [rdx + 2], rdi
+    lgdt [rdx]
+    add rsp, 0x10
+    mov rsp, rbp
+    pop rbp
+    ret
+
+global set_ds
+set_ds:
+    mov ds, di
+    mov es, di
+    mov ss, di
+    mov gs, di
+    mov fs, di
+    ret
+
+global set_cs
+set_cs:
+    push rbp
+    mov rbp,rsp
+    push rdi 
+    push label
+    o64 retf
+
+global label
+label:
+    mov     rsp,rbp
+    pop     rbp
+    ret

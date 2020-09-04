@@ -14,7 +14,3 @@ void init_memory(MemoryMap *memmap) {
         }
     }
 }
-
-void allocate(size_t size) {
-
-}
