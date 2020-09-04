@@ -13,7 +13,7 @@ void init_segment() {
     load_gdt((uint64_t)(&gdt[0]), sizeof(gdt) - 1);
 
     set_ds(0);
-    set_cs(1 << 3);
+    set_cs(vmmCS);
 }
 
 uint64_t create_segment_descriptor(uint64_t type, uint64_t dpl) {

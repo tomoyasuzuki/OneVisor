@@ -1,4 +1,5 @@
 #include <stdint.h>
+uint16_t vmmCS = 1 << 3;
 
 void init_segment();
 
