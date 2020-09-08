@@ -43,7 +43,7 @@ void set_idt_entry(struct interrupt_descriptor *desc, uint64_t handler) {
 }
 
 void halt(void) {
-  while (1) __asm__("hlt");
+    while (1) __asm__("hlt");
 }
 
 void log_error(struct interrupt_frame *frame, char *error_type) {
