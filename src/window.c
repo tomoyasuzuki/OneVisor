@@ -14,6 +14,8 @@ void init_graphic(FrameBuffer* buff) {
     window.pixelsPerScanLine = buff->pixelsPerScanLine;
     window.current_x = 0;
     window.current_y = 0;
+
+    blackout_window();
 }
 
 void draw_pixel_with_color(uint32_t x, uint32_t y, PixelColor color) {
