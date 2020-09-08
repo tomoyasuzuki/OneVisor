@@ -144,6 +144,9 @@ EFI_STATUS EFIAPI UefiMain (IN EFI_HANDLE ImageHandle,IN EFI_SYSTEM_TABLE *Syste
     1
   };
 
+  Print(L"base: 0x%x\n", (uint64_t)gop->Mode->FrameBufferBase);
+  Print(L"size: 0x%x\n", (uint64_t)gop->Mode->FrameBufferSize);
+
     switch (gop->Mode->Info->PixelFormat)
   {
   case PixelRedGreenBlueReserved8BitPerColor:

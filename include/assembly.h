@@ -11,3 +11,4 @@ void io_out32(uint16_t addr, uint32_t value);
 void load_gdt(uint64_t offset, uint16_t limit);
 void set_ds(uint16_t value);
 void set_cs(uint16_t cs);
+void load_idt(uint16_t limit, uint64_t offset);

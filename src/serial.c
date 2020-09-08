@@ -51,7 +51,7 @@ void log_char(char *value) {
 }
 
 void send_u64(uint64_t value) {
-    char str[124];
+    char str[1024];
     convert_u64_to_char(str, value);
     send_serials(str);
 }
