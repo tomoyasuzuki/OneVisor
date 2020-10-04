@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 
-union cr0 {
+union cr0_t {
     uint64_t control;
     struct {
         uint64_t pe : 1;
@@ -20,6 +20,35 @@ union cr0 {
         uint64_t cd : 1;
         uint64_t pg : 1;
         uint64_t reserved4 : 32;
+    } bits;
+};
+
+union cr4_t {
+    uint64_t control;
+    struct {
+        uint64_t vme : 1;
+        uint64_t pvi : 1;
+        uint64_t tsd : 1;
+        uint64_t de : 1;
+        uint64_t pse : 1;
+        uint64_t pae : 1;
+        uint64_t mce : 1;
+        uint64_t pge : 1;
+        uint64_t pce : 1;
+        uint64_t osfxsr : 1;
+        uint64_t osxmmexcpt : 1;
+        uint64_t umip : 1;
+        uint64_t : 1;
+        uint64_t vmxe : 1;
+        uint64_t smxe : 1;
+        uint64_t fsgsbase : 1;
+        uint64_t : 1;
+        uint64_t pcide : 1;
+        uint64_t osxsave : 1;
+        uint64_t : 1;
+        uint64_t smep : 1;
+        uint64_t smap : 1;
+        uint64_t : 42;      
     } bits;
 };
 

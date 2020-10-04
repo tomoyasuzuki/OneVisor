@@ -8,7 +8,7 @@
 #define PageSize4K 4096
 #define PageSize2M 512 * PageSize4K
 #define PageSize1G 512 * PageSize2M
-#define NumOfPDPT 4
+#define NumOfPDPT 32
 
 alignas(PageSize4K) uint64_t pml4_table[512];
 alignas(PageSize4K) uint64_t pdp_table[NumOfPDPT];
@@ -23,7 +23,7 @@ void init_paging() {
         }
     }
 
-    union cr0 current_cr0;
+    union cr0_t current_cr0;
     current_cr0.control = read_cr0();
     current_cr0.bits.wp = 1;
     write_cr3((uint64_t)&pml4_table[0]);

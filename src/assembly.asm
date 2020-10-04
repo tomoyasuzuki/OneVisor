@@ -10,6 +10,14 @@ global write_cr3
 write_cr3:
     mov cr3, rdi
     ret
+global read_cr4
+read_cr4:
+    mov rax, cr4
+    ret
+global write_cr4
+write_cr4:
+    mov cr4, rdi
+    ret
 
 global read_cr0
 read_cr0:

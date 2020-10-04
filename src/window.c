@@ -36,7 +36,9 @@ void fill_window(PixelColor color) {
 }
 
 void blackout_window() {
-    fill_window(default_backgroundcolor);
+    for (uint64_t i = 0; i < window.size; i++) {
+        window.baseAddr[i] = 0;
+    }
 }
 
 void draw_font(uint32_t x, uint32_t y, char c) {

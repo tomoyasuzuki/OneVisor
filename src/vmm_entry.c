@@ -10,8 +10,13 @@
 
 void vmmEntry(BootInfo *boot_info) {
     init_graphic(boot_info->frame_buff);
+    char *s = "VMM Start.";
+    put_s(s);
     init_serial();
-    init_segment();
+    send_serials(s);
+    init_segment(); 
     init_idt();
     init_paging();
+    char *hoge = "hoge";
+    put_s(hoge);
 }
