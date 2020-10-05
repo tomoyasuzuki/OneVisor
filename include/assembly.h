@@ -14,3 +14,5 @@ void load_gdt(uint64_t offset, uint16_t limit);
 void set_ds(uint16_t value);
 void set_cs(uint16_t cs);
 void load_idt(uint16_t limit, uint64_t offset);
+uint32_t cpuidf(uint64_t id);
+uint64_t read_msr(uint64_t id);

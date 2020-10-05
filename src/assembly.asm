@@ -10,6 +10,7 @@ global write_cr3
 write_cr3:
     mov cr3, rdi
     ret
+
 global read_cr4
 read_cr4:
     mov rax, cr4
@@ -102,3 +103,20 @@ load_idt:
     mov rsp, rbp
     pop rbp
     ret
+
+global cpuidf
+cpuidf:
+    mov rax, 0x1
+    cpuid
+    mov rax, rcx
+    ret
+
+global read_msr
+read_msr:
+    mov rcx, rdi
+    rdmsr
+    shl edx, 32
+    or rax, rdx
+    ret
+
+
