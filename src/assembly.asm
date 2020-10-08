@@ -113,9 +113,9 @@ cpuidf:
 
 global read_msr
 read_msr:
-    mov rcx, rdi
+    mov ecx, edi
     rdmsr
-    shl edx, 32
+    shl rdx, 32
     or rax, rdx
     ret
 

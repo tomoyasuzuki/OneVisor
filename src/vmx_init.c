@@ -19,6 +19,7 @@ void vmx_init() {
 
     log_u64((uint64_t)cpu_feature);
     /* check vmx is enable or not */
+    log_u64(ia32_feature_control);
     if (cpu_feature & CPUID_VMX_BIT) {
         if (ia32_feature_control & IA32_FEATURE_CONTROL_LOCK_BIT) {
             /* vmx is enable　*/
