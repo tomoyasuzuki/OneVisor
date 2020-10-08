@@ -5,9 +5,9 @@ TARGET    = ./VMMLoaderPkg/vmm_entry.elf
 SRCDIR    = ./src
 SOURCES := $(shell find $(SRCDIR) -name *.c -or -name *.asm)
 OBJDIR    = ./obj
-OBJECTS   = $(OBJDIR)/vmm_entry.o $(OBJDIR)/window.o $(OBJDIR)/font.o $(OBJDIR)/memory.o $(OBJDIR)/assembly.o $(OBJDIR)/paging.o $(OBJDIR)/serial.o $(OBJDIR)/segment.o $(OBJDIR)/util.o $(OBJDIR)/interrupt.o
+OBJECTS   = $(OBJDIR)/vmm_entry.o $(OBJDIR)/window.o $(OBJDIR)/font.o $(OBJDIR)/memory.o $(OBJDIR)/assembly.o $(OBJDIR)/paging.o $(OBJDIR)/serial.o $(OBJDIR)/segment.o $(OBJDIR)/util.o $(OBJDIR)/interrupt.o $(OBJDIR)/vmx_init.o 
 DEPENDS   = $(OBJECTS:.o=.d)
-LDFLAGS = --entry vmmEntry --image-base 0x100000 --static -nostdlib 
+LDFLAGS = --entry vmmEntry --image-base 0x7526000 --static -nostdlib 
 
 $(TARGET): $(OBJECTS)
 	ld.lld $(LDFLAGS) -o $(TARGET) $(OBJECTS)
