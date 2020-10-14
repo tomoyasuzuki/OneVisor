@@ -73,7 +73,7 @@ union segment_descriptor {
 
 struct vmcs_t {
     union {
-        u_int64_t control;
+        uint64_t control;
         struct {
             uint64_t revision_identifier : 31;
             uint64_t shadow : 1;

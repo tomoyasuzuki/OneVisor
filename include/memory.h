@@ -3,13 +3,8 @@
 #include <stdio.h>
 #include "memorymap.h"
 
-typedef struct Chunk {
-    uint64_t prev_size;
-    uint64_t size;
-    struct Chunk *prev;
-    struct Chunk *next;
-} Chunk;
-
 void init_memory(MemoryMap *memmap);
-
+void init_paging();
+void log_base_p();
 void allocate(size_t size);
+void log_memmap(MemoryDescriptor *desc);

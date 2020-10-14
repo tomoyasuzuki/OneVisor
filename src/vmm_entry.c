@@ -2,7 +2,7 @@
 #include "window.h"
 #include "memory.h"
 #include "assembly.h"
-#include "paging.h"
+#include "memory.h"
 #include "serial.h"
 #include "segment.h"
 #include "interrupt.h"
@@ -19,5 +19,6 @@ void vmmEntry(BootInfo *boot_info) {
     char *s = "VMM Start.";
     put_s(s);
     log_char(s);
+    init_memory(boot_info->memmap);
     vmx_init();
 }

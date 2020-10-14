@@ -42,12 +42,12 @@ void send_serials(const char *value) {
 
 void log_u64(uint64_t value) {
     send_addr(value);
-    send_serials("\n");
+    send_serials("\n\r");
 }
 
 void log_char(char *value) {
     send_serials(value);
-    send_serials("\n");
+    send_serials("\n\r");
 }
 
 void send_u64(uint64_t value) {

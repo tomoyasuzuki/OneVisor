@@ -1,1 +1,1 @@
-../../MyVisor/include/elf.h
+/home/suzukitomoya/vmmdev/OneVisor/include/elf.h
