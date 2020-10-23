@@ -70,120 +70,143 @@ void log_error(struct interrupt_frame *frame, char *error_type) {
 
 __attribute__((interrupt))
 void de_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#DE Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void db_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#DB Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void bp_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#BP Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void of_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#OF Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void br_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#BR Exception\n");
     halt();
 }   
 
 __attribute__((interrupt))
 void ud_handler(struct interrupt_frame *frame) {
-    log_error(frame, (char*)"#UD Exception\n");
+    //while(1);
+    log_char("ud");
+    //log_error(frame, (char*)"#UD Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void nm_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#NM Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void df_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#DF Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void ts_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#TS Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void np_handler(struct interrupt_frame *frame) {
+    //while(1)
     log_error(frame, (char*)"#NP Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void ss_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#SS Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void gp_handler(struct interrupt_frame *frame) {
-    log_error(frame, (char*)"#GP Exception\n");
+    //while(1);
+    log_char("gp");
+    //log_error(frame, (char*)"#GP Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void pf_handler(struct interrupt_frame *frame) {
-    log_error(frame, (char*)"#PF Exception\n");
+    //while(1);
+    log_char("pf");
+    //log_error(frame, (char*)"#PF Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void reserved_handler(struct interrupt_frame *frame) {
+    //while(1)
     log_error(frame, (char*)"#RESERVED Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void mf_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#MF Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void ac_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#AC Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void mc_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#MC Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void xm_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#XM Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void ve_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#VE Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void cp_handler(struct interrupt_frame *frame) {
+    //while(1);
     log_error(frame, (char*)"#CP Exception\n");
     halt();
 }

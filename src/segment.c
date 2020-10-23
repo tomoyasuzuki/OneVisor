@@ -26,7 +26,6 @@ uint64_t create_segment_descriptor(uint64_t type, uint64_t dpl) {
     seg_desc.bits.p = 1;
     seg_desc.bits.s = 1;
     seg_desc.bits.l = 1;
-    seg_desc.bits.db = 0;
 
     return seg_desc.control;
 }

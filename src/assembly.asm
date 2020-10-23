@@ -119,4 +119,22 @@ read_msr:
     or rax, rdx
     ret
 
+global write_msr
+write_msr:
+    mov rdx, rsi
+    shr rdx, 32
+    mov eax, esi
+    mov ecx, edi
+    wrmsr
+    ret
 
+global exec_vmxon
+exec_vmxon:
+    vmxon [rdi]
+    hlt
+    ret
+
+global disable_a20
+disable_a20:
+    out 0xee, al
+    ret

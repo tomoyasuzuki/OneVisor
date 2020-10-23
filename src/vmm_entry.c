@@ -21,4 +21,5 @@ void vmmEntry(BootInfo *boot_info) {
     log_char(s);
     init_memory(boot_info->memmap);
     vmx_init();
+    return;
 }

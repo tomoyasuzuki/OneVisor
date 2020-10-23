@@ -68,25 +68,5 @@ union segment_descriptor {
         uint64_t db : 1;
         uint32_t g : 1;
         uint64_t base3 : 8;
-    } bits;
-};
-
-struct vmcs_t {
-    union {
-        uint64_t control;
-        struct {
-            uint64_t revision_identifier : 31;
-            uint64_t shadow : 1;
-        } bits;
-    } header ;
-    uint32_t abort_indicator;
-    uint64_t data;
-};
-
-union vmxon_region {
-    uint32_t control;
-    struct {
-        uint32_t revision_identifier : 32;
-        uint32_t data : 32;
-    } bits;
-};
+    } __attribute__((packed)) bits;
+} __attribute__((packed));
