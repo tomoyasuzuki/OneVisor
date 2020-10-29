@@ -131,7 +131,11 @@ write_msr:
 global exec_vmxon
 exec_vmxon:
     vmxon [rdi]
-    hlt
+    ret
+
+global exec_vmxoff
+exec_vmxoff:
+    vmxoff
     ret
 
 global disable_a20

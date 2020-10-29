@@ -19,3 +19,4 @@ uint64_t read_msr(uint32_t addr);
 void exec_vmxon(uint64_t id);
 void disable_a20();
 void write_msr(uint32_t addr, uint64_t value);
+void exec_vmxoff();

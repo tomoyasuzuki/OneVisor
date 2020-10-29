@@ -141,7 +141,8 @@ void *alloc_pages(int num_of_pages) {
     }
 
     if (!flag) return NULL;
-    return (void*)((uint64_t)ptr + pheader_size);
+    return (void*)((uint64_t)ptr);
+    //return (void*)((uint64_t)ptr + pheader_size);
 };
 
 void free_page(void *ptr) {
