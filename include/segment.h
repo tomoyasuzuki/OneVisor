@@ -3,4 +3,5 @@
 
 void init_segment();
 
-uint64_t create_segment_descriptor(uint64_t type, uint64_t dpl);
+uint64_t createCS(uint64_t type, uint64_t dpl);
+uint64_t createDS(uint64_t type, uint64_t dpl);

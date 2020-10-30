@@ -20,3 +20,9 @@ void exec_vmxon(uint64_t id);
 void disable_a20();
 void write_msr(uint32_t addr, uint64_t value);
 void exec_vmxoff();
+uint8_t check_cf();
+uint8_t check_zf();
+uint8_t check_pf();
+uint8_t check_sf();
+uint16_t read_flags();
+

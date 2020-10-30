@@ -55,14 +55,14 @@ union cr4_t {
 union segment_descriptor {
     uint64_t control;
     struct {
-        uint64_t limit : 16;
+        uint64_t limit_low : 16;
         uint64_t base1 : 16;
         uint64_t base2 : 8;
         uint64_t type : 4;
         uint64_t s : 1;
         uint64_t dpl : 2;
         uint64_t p : 1;
-        uint64_t seg_limit : 4;
+        uint64_t limit_high : 4;
         uint64_t avl : 1;
         uint64_t l : 1;
         uint64_t db : 1;

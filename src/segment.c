@@ -7,8 +7,8 @@ uint64_t gdt[3];
 
 void init_segment() {
     gdt[0] = 0;
-    gdt[1] = create_segment_descriptor(10, 0); // code segment
-    gdt[2] = create_segment_descriptor(2,0); // data segment
+    gdt[1] = createCS(10, 0); // code segment
+    gdt[2] = createDS(2,0); // data segment
 
     load_gdt((uint64_t)(&gdt[0]), sizeof(gdt) - 1);
 
@@ -16,16 +16,46 @@ void init_segment() {
     set_cs(vmmCS);
 }
 
-uint64_t create_segment_descriptor(uint64_t type, uint64_t dpl) {
-    union segment_descriptor seg_desc;
-    seg_desc.control = 0;
+uint64_t createDS(uint64_t type, uint64_t dpl) {
+    union segment_descriptor desc;
+    uint32_t base = 0;
+    uint32_t limit = 0xfffff;
 
-    seg_desc.bits.type = type;
-    seg_desc.bits.dpl = dpl;
-    seg_desc.bits.g = 1;
-    seg_desc.bits.p = 1;
-    seg_desc.bits.s = 1;
-    seg_desc.bits.l = 1;
+    desc.control = 0;
+    desc.bits.type = type;
+    desc.bits.dpl = dpl;
+    desc.bits.g = 1;
+    desc.bits.p = 1;
+    
+    desc.bits.base1 = base & 0xffffu;
+    desc.bits.base2 = (base >> 16) & 0xffu;
+    desc.bits.base3 = (base >> 24) & 0xffu;
 
-    return seg_desc.control;
+    desc.bits.limit_low = limit & 0xffffu;
+    desc.bits.limit_high = limit & 0xffffu;
+    
+    return desc.control;
+}
+
+uint64_t createCS(uint64_t type, uint64_t dpl) {
+    union segment_descriptor desc;
+    uint64_t base = 0;
+    uint64_t limit = 0xfffff;
+
+    desc.control = 0;
+    desc.bits.type = type;
+    desc.bits.dpl = dpl;
+    desc.bits.g = 1;
+    desc.bits.p = 1;
+    desc.bits.s = 1;
+    desc.bits.l = 1;
+
+    desc.bits.base1 = base & 0xffffu;
+    desc.bits.base2 = (base >> 16) & 0xffu;
+    desc.bits.base3 = (base >> 24) & 0xffu;
+
+    desc.bits.limit_low = limit & 0xffffu;
+    desc.bits.limit_high = limit & 0xffffu;
+    
+    return desc.control;
 }

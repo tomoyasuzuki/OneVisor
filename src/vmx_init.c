@@ -59,7 +59,7 @@ void vmx_init() {
     union ia32_vmx_basic b;
     uint32_t cpu_feature = cpuidf(CPUID1);
     uint64_t ia32_feature_control = read_msr(IA32_FEATURE_CONTROL);
-
+    alignas(4096) uint32_t vmxon;
     cr00 = read_msr(IA32_VMX_CR0_FIXED0);
     cr01 = read_msr(IA32_VMX_CR0_FIXED1);
     cr40 = read_msr(IA32_VMX_CR4_FIXED0);
@@ -75,12 +75,16 @@ void vmx_init() {
     cr4.control &= cr41;
     write_cr4(cr4.control);
 
+    b.control = read_msr(IA32_VMX_BASIC);
+    vmxon = b.bits.revision_identifier;
+
     /* check vmx is enable or not */
     send_serials("cpuid: ");
     log_u64((uint64_t)cpu_feature);
 
     send_serials("IA32_feature: ");
     log_u64(ia32_feature_control);
+
     if (cpu_feature & CPUID_VMX_BIT) {
         log_char("vmxe bit is set");
 
@@ -96,9 +100,9 @@ void vmx_init() {
                 log_char("outside smx bit is set");
             }
 
-            if (b.control & ((uint64_t)1 << 48)) {
-                log_char("ia32_vmx_basic[48] is set");
-            }
+            // if (b.control & ((uint64_t)1 << 48)) {
+            //     log_char("ia32_vmx_basic[48] is set");
+            // }
             
         }
     } else {
@@ -111,12 +115,43 @@ void vmx_init() {
     write_cr4(cr4.control);
     log_char("write cr4");
 
-    b.control = read_msr(IA32_VMX_BASIC);
- 
-    exec_vmxon((uint64_t)b.control);
+    exec_vmxon((uint64_t)0x1001);
     send_serials("vmxon: ");
-    log_u64((uint64_t)b.control);
+    log_u64((uint64_t)vmxon);
     put_s("vmxon");
+
+    uint8_t cf = check_cf();
+
+    if (cf == 1) {
+        log_char("cf");
+    } 
+
+    uint8_t zf = check_zf();
+
+    if (zf == 1) {
+        log_char("zf");
+    }
+
+    uint8_t pf = check_pf();
+
+    if (pf == 1) {
+        log_char("pf");
+    }
+
+    uint8_t sf = check_sf();
+
+    if (sf == 1) {
+        log_char("sf is zero");
+    }
+
+    uint64_t flags = read_flags();
+
+    log_u64(cf);
+    log_u64(zf);
+    log_u64(flags);
+
+    //zf, pf
+
     exec_vmxoff();
     while(1);
     return;

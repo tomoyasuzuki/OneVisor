@@ -142,3 +142,37 @@ global disable_a20
 disable_a20:
     out 0xee, al
     ret
+
+global check_cf
+check_cf:
+    xor rax, rax
+    setc al
+    ret
+
+global check_zf
+check_zf:
+    xor rax, rax
+    sete al
+    ret
+
+global check_pf
+check_pf:
+    xor rax, rax
+    setp al
+    ret
+
+global check_sf
+check_sf:
+    xor rax, rax
+    setno al
+    ret
+
+global read_flags
+read_flags:
+    xor rax, rax
+    lahf
+    ret
+
+
+    
+
