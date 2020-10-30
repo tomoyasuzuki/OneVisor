@@ -14,6 +14,7 @@ void init_segment() {
 
     set_ds(0);
     set_cs(vmmCS);
+    log_char("initialize segments.");
 }
 
 uint64_t createDS(uint64_t type, uint64_t dpl) {

@@ -17,15 +17,13 @@ enum page_type {
     kFree
 };
 
-typedef struct _page {
-    struct _page *next;
-    struct _page *prev;
+typedef struct page_frame {
+    uint64_t id;
+    uint64_t addr;
     enum page_type type;
-}page_t; 
+} page_frame;
 
-
-page_t base_p = {NULL, NULL, 1};
-int pheader_size = sizeof(page_t);
+page_frame base_frame[1000];
 
 alignas(PageSize4K) uint64_t pml4_table[512];
 alignas(PageSize4K) uint64_t pdp_table[NumOfPDPT];
@@ -45,60 +43,39 @@ void init_paging() {
     current_cr0.bits.wp = 1;
     current_cr0.bits.pe = 1;
     current_cr0.bits.pg = 1;
-    //current_cr0.bits.ne = 1;
     write_cr3((uint64_t)&pml4_table[0]);
     write_cr0(current_cr0.control);
+    log_char("initialize page table.");
 }
 
-void log_p(page_t *p) {
+void log_p(page_frame *p) {
     send_serials((char*)"p: ");
     log_u64((uint64_t)p);
 }
 
-void log_base_p() {
-    log_p(&base_p);
-}
-
-void log_memmap(MemoryDescriptor *desc) {
-    send_serials((char*)"start addr: ");
-    log_u64((uint64_t)desc->physical_addr);
-    send_serials((char*)"end addr: ");
-    log_u64((uint64_t)desc->physical_addr + PageSize4K * desc->num_of_pages);
-}
-
-void init_memory(MemoryMap *memmap) {
+void init_page_frames(MemoryMap *memmap) {
+    log_char("start initializing page frames ...");
     uint64_t base = (uint64_t)memmap->buff;
-    page_t *p = &base_p;
-    page_t *tmp_p = p;
+    int i_page = 0;
 
     for (uint64_t i = base; i < base + memmap->size; i += memmap->desc_size) {
-        MemoryDescriptor *mem_desc = (MemoryDescriptor*)i;
+        MemoryDescriptor *memdesc = (MemoryDescriptor*)i;
+
+        if (memdesc->type != kEfiConventionalMemory) continue;
+
         uint64_t p_offset = PageSize4K;
-        uint64_t p_base = mem_desc->physical_addr;
+        uint64_t area_base = memdesc->physical_addr;
+        uint64_t area_last = area_base + PageSize4K * memdesc->num_of_pages;
 
-        p = (page_t*)p_base;
-        tmp_p->next = p;
-
-        if (mem_desc->type == kEfiConventionalMemory) {
-            //log_memmap(mem_desc);
-
-            page_t *pp = p; 
-            int count = 0;
-            while(count < mem_desc->num_of_pages) {
-                //log_p(pp);
-                pp->next = (page_t*)((uint64_t)pp + p_offset);
-                pp->next->next = NULL;
-                pp->next->type = kFree;
-                pp->next->prev = pp;
-                pp = pp->next;
-                count++;
-            }
-
-            tmp_p = pp;
-            // 空きページ数が多すぎるので、現時点では最初の領域だけ確保する
-            // 実機では159ページある
-            break;
+        for (uint64_t i = area_base; i < area_last; i += p_offset) {
+            page_frame p = {i, i, kFree}; // 現時点ではidをアドレスにしてしまっている
+            base_frame[i_page] = p;
+            i_page++;
         }
+
+        log_char("finished.");
+
+        break; // 空きページ数が多すぎるので、現時点では最初の領域だけ確保する
     }
 }
 
@@ -106,57 +83,54 @@ void *alloc_page() {
     return alloc_pages(1);
 }
 
-void *alloc_pages(int num_of_pages) {
-    int flag = 0;
-    page_t *p = &base_p;
-    void *ptr;
+void *alloc_pages(int num) {
+    for (int i = 0; i < 1000; i++) {
+        if (base_frame[i].type == kFree) {
+            int free_page_count = 1;
+            int j = i + 1;
 
-    while(!flag && p != NULL) {
-        if (p->type == kFree) {
-            int free_p_count = 1;
-            int p_count = 0;
-            ptr = (void*)p;
-            while(p_count < num_of_pages - 1) {
-                p = p->next;
-                p_count++;
-                if (p->type != kFree) break;
-                send_serials((char*)"free: ");
-                log_u64((uint64_t)p);
-                free_p_count++;
+            // 空きページがnum個連続している領域を探す
+            while(free_page_count != num) {
+                if (base_frame[j].type != kFree) break;
+                free_page_count++;
+                j++;
             }
 
-            if (free_p_count == num_of_pages) {
-                int mark_count = 0;
-                while(mark_count < num_of_pages) {
-                    p->type = kAllocated;
-                    send_serials((char*)"marked: ");
-                    log_u64((uint64_t)p);
-                    p = p->prev;
-                    mark_count++;
-                }
-                flag = 1;
+            // 連続した領域を確保できなかった場合は次のループへ
+            if (free_page_count != num) continue;
+
+            for (int i_free = i; i_free < i + num; i_free++) {
+                base_frame[i_free].type = kAllocated;
+                send_serials("Alloc: ");
+                log_u64(base_frame[i_free].addr);
             }
+
+            send_serials("return: ");
+            log_u64(base_frame[i].addr);
+
+
+            return (void*)base_frame[i].addr;
         }
-        p = p->next;
     }
 
-    if (!flag) return NULL;
-    return (void*)((uint64_t)ptr);
-    //return (void*)((uint64_t)ptr + pheader_size);
-};
-
-void free_page(void *ptr) {
-    return free_pages(ptr, 1);
+    return NULL;
 }
 
-void free_pages(void *ptr, int num) {
-    page_t *p = (page_t*)((uint64_t)ptr - pheader_size);
-    int free_count = 0;
-    while(free_count < num) {
-        p->type = kFree;
-        send_serials((char*)"freed: ");
-        log_u64((uint64_t)p);
-        p = p->next;
-        free_count++;
+void free_pages(void *addr, int num) {
+    int flag = 0;
+    int count = 0;
+
+    for (int i = 0; i < 1000; i++) {
+        if ((base_frame[i].addr != (uint64_t)addr) && !flag) continue;
+        if (!flag) flag = 1;
+        base_frame[i].type = kFree;
+        count++;
+        send_serials("Free: ");
+        log_u64(base_frame[i].addr);
+        if (count == num) break;
     }
+}
+
+void free_page(void *addr) {
+    return free_pages(addr, 1);
 }
