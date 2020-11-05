@@ -8,9 +8,9 @@
 
 #define CPUID1 0x1
 #define CPUID_VMX_BIT 0x20
-#define IA32_FEATURE_CONTROL_LOCK_BIT 1 << 0
-#define IA32_FEATURE_CONTROL_VMXON_INSIDE_SMX 1 << 1
-#define IA32_FEATURE_CONTROL_VMXON_OUTSIDE_SMX 1 << 2
+#define IA32_FEATURE_CONTROL_LOCK_BIT (1 << 0)
+#define IA32_FEATURE_CONTROL_VMXON_INSIDE_SMX (1 << 1)
+#define IA32_FEATURE_CONTROL_VMXON_OUTSIDE_SMX (1 << 2)
 #define IA32_FEATURE_CONTROL 0x3a
 #define IA32_VMX_BASIC 0x480
 #define IA32_VMX_CR0_FIXED0 0x486
@@ -129,6 +129,9 @@ void vmx_init() {
     vmxon->id = b.control;
     vmxon->data = 0;
 
+    uint64_t f = read_flags();
+    send_serials("f: ");
+    log_u64(f);
 
     send_serials("IA32_VMX_BASIC: ");
     log_u64(b.bits.revision_identifier);

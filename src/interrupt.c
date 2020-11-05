@@ -32,7 +32,7 @@ void init_idt() {
     set_idt_entry(&idt[19], (uint64_t)xm_handler);
     set_idt_entry(&idt[20], (uint64_t)ve_handler);
     set_idt_entry(&idt[21], (uint64_t)cp_handler);
-    while(1);
+    //while(1);
     load_idt(sizeof(idt) - 1, (uintptr_t)(&idt[0]));
 }
 
