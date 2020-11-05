@@ -16,7 +16,7 @@ void set_cs(uint16_t cs);
 void load_idt(uint16_t limit, uint64_t offset);
 uint32_t cpuidf(uint64_t id);
 uint64_t read_msr(uint32_t addr);
-void exec_vmxon(uint64_t id);
+uint64_t exec_vmxon(uint64_t id);
 void disable_a20();
 void write_msr(uint32_t addr, uint64_t value);
 void exec_vmxoff();

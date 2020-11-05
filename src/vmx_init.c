@@ -21,8 +21,7 @@
 union ia32_vmx_basic {
     uint64_t control;
     struct {
-        uint64_t revision_identifier : 31;
-        uint64_t zero : 1;
+        uint64_t revision_identifier : 32;
         uint64_t vmxon_region_size : 13;
         uint64_t : 3;
         uint64_t vmxon_physi_width : 1;
@@ -59,7 +58,8 @@ void vmx_init() {
     union ia32_vmx_basic b;
     uint32_t cpu_feature = cpuidf(CPUID1);
     uint64_t ia32_feature_control = read_msr(IA32_FEATURE_CONTROL);
-    alignas(4096) uint32_t vmxon;
+    struct vmxon_region *vmxon = NULL;
+
     cr00 = read_msr(IA32_VMX_CR0_FIXED0);
     cr01 = read_msr(IA32_VMX_CR0_FIXED1);
     cr40 = read_msr(IA32_VMX_CR4_FIXED0);
@@ -75,8 +75,22 @@ void vmx_init() {
     cr4.control &= cr41;
     write_cr4(cr4.control);
 
+    send_serials("cr00: ");
+    log_u64(cr00);
+    send_serials("cr01: ");
+    log_u64(cr01);
+    send_serials("cr40: ");
+    log_u64(cr40);
+    send_serials("cr41: ");
+    log_u64(cr41);
+    send_serials("cr0: ");
+    log_u64(cr0.control);
+    send_serials("cr4: ");
+    log_u64(cr4.control);
+
+
     b.control = read_msr(IA32_VMX_BASIC);
-    vmxon = b.bits.revision_identifier;
+    log_u64(b.control);
 
     /* check vmx is enable or not */
     send_serials("cpuid: ");
@@ -98,12 +112,7 @@ void vmx_init() {
 
             if (ia32_feature_control & IA32_FEATURE_CONTROL_VMXON_OUTSIDE_SMX) {
                 log_char("outside smx bit is set");
-            }
-
-            // if (b.control & ((uint64_t)1 << 48)) {
-            //     log_char("ia32_vmx_basic[48] is set");
-            // }
-            
+            }            
         }
     } else {
         put_s("vmx is not enable");
@@ -114,34 +123,51 @@ void vmx_init() {
     cr4.bits.smxe = 0;
     write_cr4(cr4.control);
     log_char("write cr4");
+    char *hoge = (char*)alloc_page();
+    log_char(hoge);
+    vmxon = (struct vmxon_region*)alloc_page();
+    vmxon->id = b.control;
+    vmxon->data = 0;
 
-    exec_vmxon((uint64_t)0x1001);
-    send_serials("vmxon: ");
+
+    send_serials("IA32_VMX_BASIC: ");
+    log_u64(b.bits.revision_identifier);
+    send_serials("vmxon pointer: ");
     log_u64((uint64_t)vmxon);
-    put_s("vmxon");
+
+    uint64_t result = exec_vmxon((uint64_t)vmxon);
+
+    if (result) {
+        log_char("Success");
+    } else {
+        log_char("Failed");
+    }
+
+    send_serials("result: ");
+    log_u64(result);
 
     uint8_t cf = check_cf();
 
     if (cf == 1) {
-        log_char("cf");
+        put_s("cf");
     } 
 
     uint8_t zf = check_zf();
 
     if (zf == 1) {
-        log_char("zf");
+        put_s("zf");
     }
 
     uint8_t pf = check_pf();
 
     if (pf == 1) {
-        log_char("pf");
+        put_s("pf");
     }
 
     uint8_t sf = check_sf();
 
     if (sf == 1) {
-        log_char("sf is zero");
+        put_s("sf is zero");
     }
 
     uint64_t flags = read_flags();
@@ -149,8 +175,6 @@ void vmx_init() {
     log_u64(cf);
     log_u64(zf);
     log_u64(flags);
-
-    //zf, pf
 
     exec_vmxoff();
     while(1);

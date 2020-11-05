@@ -41,7 +41,7 @@ void init_paging() {
     union cr0_t current_cr0;
     current_cr0.control = read_cr0();
     current_cr0.bits.wp = 1;
-    current_cr0.bits.pe = 1;
+    current_cr0.bits.pe = 0;
     current_cr0.bits.pg = 1;
     write_cr3((uint64_t)&pml4_table[0]);
     write_cr0(current_cr0.control);

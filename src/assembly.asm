@@ -131,6 +131,18 @@ write_msr:
 global exec_vmxon
 exec_vmxon:
     vmxon [rdi]
+    jbe vmx_fail
+    jmp vmx_success
+    ret
+
+global vmx_fail
+vmx_fail:
+    mov rax, 0x0
+    ret
+
+global vmx_success
+vmx_success:
+    mov rax, 0x01
     ret
 
 global exec_vmxoff

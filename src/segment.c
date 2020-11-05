@@ -14,7 +14,7 @@ void init_segment() {
 
     set_ds(0);
     set_cs(vmmCS);
-    log_char("initialize segments.");
+    send_serials("idt entry: ");
 }
 
 uint64_t createDS(uint64_t type, uint64_t dpl) {

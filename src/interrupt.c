@@ -6,6 +6,13 @@
 struct interrupt_descriptor idt[256];
 
 void init_idt() {
+
+    send_serials("idt entry: ");
+    log_u64((uint64_t)&idt);
+    send_serials("idt last: ");
+    log_u64((uint64_t)&idt + sizeof(idt));
+    send_serials("gp location: ");
+    log_u64((uint64_t)&idt + 12 * sizeof(struct interrupt_descriptor));
     set_idt_entry(&idt[0], (uint64_t)de_handler);
     set_idt_entry(&idt[1], (uint64_t)db_handler);
     set_idt_entry(&idt[3], (uint64_t)bp_handler);
@@ -25,14 +32,14 @@ void init_idt() {
     set_idt_entry(&idt[19], (uint64_t)xm_handler);
     set_idt_entry(&idt[20], (uint64_t)ve_handler);
     set_idt_entry(&idt[21], (uint64_t)cp_handler);
-
+    while(1);
     load_idt(sizeof(idt) - 1, (uintptr_t)(&idt[0]));
 }
 
 void set_idt_entry(struct interrupt_descriptor *desc, uint64_t handler) {
     union interrupt_descriptor_attr attr;
     attr.data = 0;
-    attr.bits.descriptor_type = 14;
+    attr.bits.descriptor_type = 14; // interrupt gate
     attr.bits.dpl = 0;
     attr.bits.present_flag = 1;
     desc->attr = attr;
@@ -70,42 +77,42 @@ void log_error(struct interrupt_frame *frame, char *error_type) {
 
 __attribute__((interrupt))
 void de_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#DE Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void db_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#DB Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void bp_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#BP Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void of_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#OF Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void br_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#BR Exception\n");
     halt();
 }   
 
 __attribute__((interrupt))
 void ud_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_char("ud");
     //log_error(frame, (char*)"#UD Exception\n");
     halt();
@@ -113,21 +120,21 @@ void ud_handler(struct interrupt_frame *frame) {
 
 __attribute__((interrupt))
 void nm_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#NM Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void df_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#DF Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void ts_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#TS Exception\n");
     halt();
 }
@@ -141,14 +148,14 @@ void np_handler(struct interrupt_frame *frame) {
 
 __attribute__((interrupt))
 void ss_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#SS Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void gp_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_char("gp");
     //log_error(frame, (char*)"#GP Exception\n");
     halt();
@@ -156,7 +163,7 @@ void gp_handler(struct interrupt_frame *frame) {
 
 __attribute__((interrupt))
 void pf_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_char("pf");
     //log_error(frame, (char*)"#PF Exception\n");
     halt();
@@ -171,42 +178,42 @@ void reserved_handler(struct interrupt_frame *frame) {
 
 __attribute__((interrupt))
 void mf_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#MF Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void ac_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#AC Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void mc_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#MC Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void xm_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#XM Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void ve_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#VE Exception\n");
     halt();
 }
 
 __attribute__((interrupt))
 void cp_handler(struct interrupt_frame *frame) {
-    //while(1);
+    
     log_error(frame, (char*)"#CP Exception\n");
     halt();
 }
