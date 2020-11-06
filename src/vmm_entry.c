@@ -2,17 +2,16 @@
 #include "window.h"
 #include "memory.h"
 #include "assembly.h"
-#include "memory.h"
 #include "serial.h"
 #include "segment.h"
 #include "interrupt.h"
 #include "vmx_init.h"
 #include <stdint.h>
+#include <stdalign.h>
 
-char *hoge;
-char *huga;
+alignas(16) uint8_t vmm_stack[1024];
 
-void vmmEntry(BootInfo *boot_info) {
+extern void vmmEntry(BootInfo *boot_info) {
     init_serial();
     init_idt();
     init_segment();

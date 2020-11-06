@@ -3,7 +3,7 @@
 #include "assembly.h"
 #include "serial.h"
 
-uint64_t gdt[3];
+uint64_t gdt[24];
 
 void init_segment() {
     gdt[0] = 0;
@@ -12,9 +12,10 @@ void init_segment() {
 
     load_gdt((uint64_t)(&gdt[0]), sizeof(gdt) - 1);
 
-    set_ds(0);
-    set_cs(vmmCS);
-    send_serials("idt entry: ");
+    set_cs(vmmCS, vmmSS);
+    set_ss(vmmSS);
+    set_ds(0, vmmSS);
+    log_char("initialize segments.");
 }
 
 uint64_t createDS(uint64_t type, uint64_t dpl) {

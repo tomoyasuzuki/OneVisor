@@ -7,12 +7,12 @@ struct interrupt_descriptor idt[256];
 
 void init_idt() {
 
-    send_serials("idt entry: ");
-    log_u64((uint64_t)&idt);
-    send_serials("idt last: ");
-    log_u64((uint64_t)&idt + sizeof(idt));
-    send_serials("gp location: ");
-    log_u64((uint64_t)&idt + 12 * sizeof(struct interrupt_descriptor));
+    // send_serials("idt entry: ");
+    // log_u64((uint64_t)&idt);
+    // send_serials("idt last: ");
+    // log_u64((uint64_t)&idt + sizeof(idt));
+    // send_serials("gp location: ");
+    // log_u64((uint64_t)&idt + 12 * sizeof(struct interrupt_descriptor));
     set_idt_entry(&idt[0], (uint64_t)de_handler);
     set_idt_entry(&idt[1], (uint64_t)db_handler);
     set_idt_entry(&idt[3], (uint64_t)bp_handler);
@@ -32,7 +32,7 @@ void init_idt() {
     set_idt_entry(&idt[19], (uint64_t)xm_handler);
     set_idt_entry(&idt[20], (uint64_t)ve_handler);
     set_idt_entry(&idt[21], (uint64_t)cp_handler);
-    //while(1);
+
     load_idt(sizeof(idt) - 1, (uintptr_t)(&idt[0]));
 }
 

@@ -1,5 +1,6 @@
 #include <stdint.h>
 #define vmmCS (1 << 3)
+#define vmmSS (2 << 3)
 
 void init_segment();
 

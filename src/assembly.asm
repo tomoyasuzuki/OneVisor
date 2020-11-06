@@ -55,6 +55,7 @@ io_out32:
     mov eax, esi
     out dx, eax
     ret
+    
 global load_gdt
 load_gdt:
     push rbp
@@ -73,13 +74,19 @@ global set_ds
 set_ds:
     mov ds, di
     mov es, di
-    mov ss, di
     mov gs, di
     mov fs, di
     ret
 
+global set_ss
+set_ss:
+    mov ss, di
+    ret
+
+
 global set_cs
 set_cs:
+    mov ss, si
     push rbp
     mov rbp,rsp
     push rdi 
@@ -183,7 +190,16 @@ global read_flags
 read_flags:
     xor rax, rax
     lahf
-    ret
+    ret 
+
+extern vmm_stack
+extern vmmEntry
+
+global vmm_start
+vmm_start:
+    mov rsp, vmm_stack + 1024
+    call vmmEntry
+
 
 
     

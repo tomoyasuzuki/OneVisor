@@ -1,1 +1,0 @@
-void vmx_init();
