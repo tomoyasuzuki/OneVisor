@@ -16,11 +16,12 @@ extern void vmmEntry(BootInfo *boot_info) {
     init_idt();
     init_segment();
     init_paging();
+    init_page_frames(boot_info->memmap);
+    init_tss();
     init_graphic(boot_info->frame_buff);
     char *s = "VMM Start.";
     put_s(s);    
     log_char(s);
-    init_page_frames(boot_info->memmap);
     vmx_init();
     while(1);
     return;

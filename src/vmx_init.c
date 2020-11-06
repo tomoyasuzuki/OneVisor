@@ -180,6 +180,5 @@ void vmx_init() {
     log_u64(flags);
 
     exec_vmxoff();
-    while(1);
     return;
 }

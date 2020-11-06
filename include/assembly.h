@@ -11,9 +11,8 @@ void io_out8(uint16_t addr, uint8_t value);
 uint32_t io_in32(uint16_t addr);
 void io_out32(uint16_t addr, uint32_t value);
 void load_gdt(uint64_t offset, uint16_t limit);
-void set_ds(uint16_t value, uint16_t ss);
+void set_ds(uint16_t value);
 void set_cs(uint16_t cs, uint16_t ss);
-void set_ss(uint16_t ss);
 void load_idt(uint16_t limit, uint64_t offset);
 uint32_t cpuidf(uint64_t id);
 uint64_t read_msr(uint32_t addr);
@@ -26,4 +25,4 @@ uint8_t check_zf();
 uint8_t check_pf();
 uint8_t check_sf();
 uint16_t read_flags();
-
+void loadtr(uint16_t index);
