@@ -14,7 +14,7 @@ void init_segment() {
 
     load_gdt((uint64_t)(&gdt[0]), sizeof(gdt) - 1);
 
-    set_cs(vmmCS, 16);
+    set_cs(vmmCS, vmmSS);
     set_ds(0);
     log_char("initialize segments.");
 }
@@ -31,16 +31,14 @@ uint64_t createDS(uint64_t type, uint64_t dpl) {
     desc.bits.p = 1;
     desc.bits.db = 1;
     
-    // desc.bits.base1 = base & 0xffffu;
-    // desc.bits.base2 = (base >> 16) & 0xffu;
-    // desc.bits.base3 = (base >> 24) & 0xffu;
+    desc.bits.base1 = base & 0xffffu;
+    desc.bits.base2 = (base >> 16) & 0xffu;
+    desc.bits.base3 = (base >> 24) & 0xffu;
 
-    // desc.bits.limit_low = limit & 0xffffu;
-    // desc.bits.limit_high = limit & 0xffffu;
+    desc.bits.limit_low = limit & 0xffffu;
+    desc.bits.limit_high = limit & 0xffffu;
     
-    //return desc.control;
-    uint64_t addr = 0xC09A0000000000;
-    return addr;
+    return desc.control;
 }
 
 uint64_t createCS(uint64_t type, uint64_t dpl) {
@@ -56,18 +54,16 @@ uint64_t createCS(uint64_t type, uint64_t dpl) {
     desc.bits.s = 1;
     desc.bits.l = 1;
 
-    // desc.bits.base1 = base & 0xffffu;
-    // desc.bits.base2 = (base >> 16) & 0xffu;
-    // desc.bits.base3 = (base >> 24) & 0xffu;
+    desc.bits.base1 = base & 0xffffu;
+    desc.bits.base2 = (base >> 16) & 0xffu;
+    desc.bits.base3 = (base >> 24) & 0xffu;
 
-    // desc.bits.limit_low = limit & 0xffffu;
-    // desc.bits.limit_high = limit & 0xffffu;
+    desc.bits.limit_low = limit & 0xffffu;
+    desc.bits.limit_high = limit & 0xffffu;
     
     log_u64(desc.control);
 
-    //return desc.control; 
-    uint64_t addr = 0xA09A0000000000;
-    return addr;;
+    return desc.control; 
 }
 
 void set_tss(int index, uint64_t val) {
@@ -98,9 +94,7 @@ uint64_t create_sys_seg(uint64_t type, uint64_t dpl, uint64_t base, uint64_t lim
     desc.bits.limit_high = limit & 0xffffu;
 
 
-    log_u64(desc.control);
-    uint64_t addr = 0xC0990000000000;
-    return addr;
+    return desc.control;
 }
 
 void init_tss() {
@@ -110,6 +104,5 @@ void init_tss() {
     uint64_t tss_addr = (uint64_t)&tss[0];
     gdt[ktss >> 3] = create_sys_seg(9, 0, tss_addr & 0xffffffff, sizeof(tss) - 1);
 
-    //loadtr(ktss);
-    //set_ss(vmmSS);
+    loadtr(ktss);
 }

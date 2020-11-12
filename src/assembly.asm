@@ -78,15 +78,11 @@ set_ds:
     mov fs, di
     ret
 
-global set_ss
-set_ss:
-    mov ss, di
-    ret
-
 global set_cs
 set_cs:
     push rbp
     mov rbp,rsp
+    mov ss, si
     push rdi 
     push label
     o64 retf
