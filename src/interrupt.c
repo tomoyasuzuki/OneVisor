@@ -116,6 +116,7 @@ void ud_handler(struct interrupt_frame *frame) {
     log_char("ud");
     //log_error(frame, (char*)"#UD Exception\n");
     halt();
+
 }
 
 __attribute__((interrupt))
@@ -158,7 +159,7 @@ void gp_handler(struct interrupt_frame *frame) {
     
     log_char("gp");
     //log_error(frame, (char*)"#GP Exception\n");
-    halt();
+    while(1);
 }
 
 __attribute__((interrupt))

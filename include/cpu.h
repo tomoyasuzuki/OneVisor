@@ -52,13 +52,19 @@ union cr4_t {
     } bits;
 };
 
+enum desc_type {
+    kReadWrite = 2,
+    kExecRead = 10,
+    kTSS = 9
+};
+
 union segment_descriptor {
     uint64_t control;
     struct {
         uint64_t limit_low : 16;
         uint64_t base1 : 16;
         uint64_t base2 : 8;
-        uint64_t type : 4;
+        enum desc_type type : 4;
         uint64_t s : 1;
         uint64_t dpl : 2;
         uint64_t p : 1;
